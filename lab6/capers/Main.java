@@ -37,31 +37,69 @@ public class Main {
      * @param args arguments from the command line
      */
     public static void main(String[] args) {
-        if (args.length == 0) {
-            Utils.exitWithError("Must have at least one argument");
+//        if (args.length == 0) {
+//            Utils.exitWithError("Must have at least one argument");
+//        }
+//
+//        CapersRepository.setupPersistence();
+//        String text;
+//        switch (args[0]) {
+//        case "story":
+//            /* This call has been handled for you. The rest will be similar. */
+//            validateNumArgs("story", args, 2);
+//            text = args[1];
+//            CapersRepository.writeStory(text);
+//            break;
+//        case "dog":
+//            validateNumArgs("dog", args, 4);
+//            // TODO: make a dog
+//            Dog mydog = new Dog(args[1], args[2], Integer.parseInt(args[3]));
+//            mydog.saveDog();
+//            break;
+//        case "birthday":
+//            validateNumArgs("birthday", args, 2);
+//            // TODO: celebrate this dog's birthday
+//            Dog mydog2 = Dog.fromFile(args[1]);
+//            if (mydog2 != null) {
+//                mydog2.haveBirthday();
+//            }
+//            break;
+//        default:
+//            exitWithError(String.format("Unknown command: %s", args[0]));
+//        }
+//        return;
+        try {
+            if (args.length == 0) {
+                Utils.exitWithError("Must have at least one argument");
+            }
+
+            CapersRepository.setupPersistence();
+            String text;
+            switch (args[0]) {
+                case "story":
+                    /* This call has been handled for you. The rest will be similar. */
+                    validateNumArgs("story", args, 2);
+                    text = args[1];
+                    CapersRepository.writeStory(text);
+                    break;
+                case "dog":
+                    validateNumArgs("dog", args, 4);
+                    // TODO: make a dog
+                    CapersRepository.makeDog(args[1], args[2], Integer.parseInt(args[3]));
+                    break;
+                case "birthday":
+                    validateNumArgs("birthday", args, 2);
+                    // TODO: celebrate this dog's birthday
+                    CapersRepository.celebrateBirthday(args[1]);
+                    break;
+                default:
+                    exitWithError(String.format("Unknown command: %s", args[0]));
+            }
+        } catch (Exception e){
+                e.printStackTrace();
+                System.exit(1); // 确保在异常情况下以非零状态码退出
         }
 
-        CapersRepository.setupPersistence();
-        String text;
-        switch (args[0]) {
-        case "story":
-            /* This call has been handled for you. The rest will be similar. */
-            validateNumArgs("story", args, 2);
-            text = args[1];
-            CapersRepository.writeStory(text);
-            break;
-        case "dog":
-            validateNumArgs("dog", args, 4);
-            // TODO: make a dog
-            break;
-        case "birthday":
-            validateNumArgs("birthday", args, 2);
-            // TODO: celebrate this dog's birthday
-            break;
-        default:
-            exitWithError(String.format("Unknown command: %s", args[0]));
-        }
-        return;
     }
 
     /**

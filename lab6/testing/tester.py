@@ -149,6 +149,7 @@ def doExecute(cmnd, dir, timeout, line_num):
     try:
         chdir(dir)
         full_cmnd = "{} {} {}".format(JAVA_COMMAND, GITLET_CLASS, cmnd)
+        print(f"Executing command: {full_cmnd}")
         skip_first_line = False
 
         if DEBUG:
@@ -166,9 +167,12 @@ def doExecute(cmnd, dir, timeout, line_num):
         out = doCommand(full_cmnd, timeout, skip_first_line)
         return "OK", out
     except CalledProcessError as excp:
+        print(f"Command failed with exit code {excp.returncode}")
+        print(f"Command output: {excp.output}")
         return ("java capers.Main exited with code {}".format(excp.args[0]),
                 excp.output)
     except TimeoutExpired:
+        
         return "timeout", None
     finally:
         chdir(here)
@@ -426,7 +430,9 @@ if __name__ == "__main__":
         print(USAGE)
         sys.exit(0)
 
-    ON_WINDOWS = Match(r'.*\\', join('a', 'b'))
+    #ON_WINDOWS = Match(r'.*\\', join('a', 'b'))
+    import os
+    ON_WINDOWS = os.name == 'nt'
     if ON_WINDOWS:
         if 'CLASSPATH' in environ:
             environ['CLASSPATH'] = "{};{}".format(prog_dir, environ['CLASSPATH'])

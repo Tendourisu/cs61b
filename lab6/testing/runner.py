@@ -7,6 +7,9 @@ from os import chdir, environ, getcwd, mkdir, remove
 from shutil import copyfile, rmtree
 from math import log
 from glob import glob
+import os
+if 'REPO_DIR' not in os.environ:
+    os.environ['REPO_DIR'] = 'D:/application program/cs61b'
 
 SHORT_USAGE = """\
 Usage: python3 runner.py OPTIONS TEST.in ...
@@ -462,7 +465,9 @@ if __name__ == "__main__":
     lib_dir = "\"" + lib_dir + "\"" # in case path has a space in it
 
     lib_glob = join(lib_dir, "*")
-    ON_WINDOWS = Match(r'.*\\', join('a', 'b'))
+    #ON_WINDOWS = Match(r'.*\\', join('a', 'b'))
+    import os
+    ON_WINDOWS = os.name == 'nt'
     if ON_WINDOWS:
         if ('CLASSPATH' in environ):
             environ['CLASSPATH'] = "{};{};{}".format(abspath(getcwd()), lib_glob, environ['CLASSPATH'])
